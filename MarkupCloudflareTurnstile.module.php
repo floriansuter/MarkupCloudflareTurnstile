@@ -3,7 +3,7 @@
 /**
  * Markup Cloudflare Turnstile
  *
- * @copyright 2024 NB Communication Ltd
+ * @copyright 2025 NB Communication Ltd
  * @license Mozilla Public License v2.0 http://mozilla.org/MPL/2.0/
  *
  */
@@ -82,7 +82,7 @@ class MarkupCloudflareTurnstile extends WireData implements Module, Configurable
 	public function getScript(array $params = []) {
 		$url = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
 		if(count($params)) $url .= '?' . http_build_query($params);
-		return "<script src=$url defer></script>";
+		return "<script src=\"$url\" defer></script>";
 	}
 
 	/**
