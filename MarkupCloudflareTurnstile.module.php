@@ -20,8 +20,6 @@ class MarkupCloudflareTurnstile extends WireData implements Module, Configurable
 	 */
 	public function render($attrs = [], InputfieldForm $form = null) {
 
-		$modules = $this->wire('modules');
-
 		if($attrs instanceof InputfieldForm) {
 			$form = $attrs;
 			$attrs = [];
@@ -29,22 +27,11 @@ class MarkupCloudflareTurnstile extends WireData implements Module, Configurable
 
 		if(!is_array($attrs)) $attrs = [];
 
-		if($modules->isInstalled('MarkupGoogleRecaptcha')) {
-			// Piggy back on MarkupGoogleRecaptcha settings
-			$markupGoogleRecaptcha = $modules->get('MarkupGoogleRecaptcha');
-			$recaptchaInferredAttrs = [
-				'data-theme' => $markupGoogleRecaptcha->data_theme ? 'dark' : 'light',
-			];
-			if($markupGoogleRecaptcha->data_size) {
-				$recaptchaInferredAttrs['data-size'] = 'compact';
-			}
-			if($markupGoogleRecaptcha->data_index) {
-				$recaptchaInferredAttrs['data-tabindex'] = $markupGoogleRecaptcha->data_index;
-			}
-		}
-
-		$attrs = array_merge($recaptchaInferredAttrs ?? [], $attrs, [
+		$attrs = array_merge($attrs, [
 			'data-sitekey' => $this->siteKey,
+			'data-theme' => $this->dataTheme,
+			'data-size' => $this->dataSize,
+			'data-tabindex' => $this->dataIndex
 		]);
 
 		if(!isset($attrs['class'])) {
@@ -91,10 +78,19 @@ class MarkupCloudflareTurnstile extends WireData implements Module, Configurable
 	 * @return bool
 	 *
 	 */
-	public function verifyResponse() {
+	public function verifyResponse($response = null) {
 
-		$response = $this->wire('input')->post('cf-turnstile-response');
-		if(!$response) return false;
+		// check if $response->value is set
+		if ($response instanceof WireInput) {
+			$response = $response->post('cf-turnstile-response');
+		} elseif ($response instanceof WireData) {
+			$response = $response->get('cf-turnstile-response');
+		} elseif ($response === null) {
+			// If no response is provided, try to get it from the request
+			$response = $this->wire('input')->post('cf-turnstile-response');
+		}
+
+		if(!$response || $response === "") return false;
 
 		return json_decode($this->wire(new WireHttp())->post(
 			'https://challenges.cloudflare.com/turnstile/v0/siteverify',

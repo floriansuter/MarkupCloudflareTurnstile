@@ -52,6 +52,44 @@ class MarkupCloudflareTurnstileConfig extends ModuleConfig {
 			],
 		]);
 
+		$inputfields->add([
+			'type' => 'select',
+			'name' => 'dataTheme',
+			'label' => $this->_('Theme'),
+			'options' => [
+				'auto' => $this->_('Auto'),
+				'dark' => $this->_('Dark'),
+				'light' => $this->_('Light'),
+			],
+			'value' => 'auto',
+			'columnWidth' => 33,
+			'icon' => 'paint-brush',
+		]);
+
+		$inputfields->add([
+			'type' => 'select',
+			'name' => 'dataSize',
+			'label' => $this->_('Size'),
+			'options' => [
+				'normal' => $this->_('Normal'),
+				'compact' => $this->_('Compact'),
+			],
+			'value' => 'normal',
+			'columnWidth' => 34,
+			'icon' => 'arrows-alt',
+		]);
+
+		$inputfields->add([
+			'type' => 'text',
+			'name' => 'dataIndex',
+			'label' => $this->_('Tab Index'),
+			'description' => $this->_('Set a tab index for the Turnstile widget. Leave empty for default behavior.'),
+			'columnWidth' => 33,
+			'icon' => 'indent',
+			'value' => '',
+			'required' => false,
+		]);
+
 		return $inputfields;
 	}
 }
