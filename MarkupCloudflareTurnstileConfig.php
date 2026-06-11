@@ -1,11 +1,14 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 /**
  * Markup Cloudflare Turnstile Configuration
  *
  */
 
-class MarkupCloudflareTurnstileConfig extends ModuleConfig {
+class MarkupCloudflareTurnstileConfig extends ModuleConfig
+{
 
 	/**
 	 * Returns default values for module variables
@@ -13,7 +16,8 @@ class MarkupCloudflareTurnstileConfig extends ModuleConfig {
 	 * @return array
 	 *
 	 */
-	public function getDefaults() {
+	public function getDefaults()
+	{
 		return [
 			'siteKey' => '',
 			'secretKey' => '',
@@ -26,7 +30,8 @@ class MarkupCloudflareTurnstileConfig extends ModuleConfig {
 	 * @return InputfieldWrapper
 	 *
 	 */
-	public function getInputfields() {
+	public function getInputfields()
+	{
 
 		$inputfields = parent::getInputfields();
 
